@@ -11,6 +11,7 @@ body{
     flex-direction: column;
     min-height: 100vh;
     background-color: grey;
+    font-family: 'Inter', sans-serif;
 }
 
 .container{
@@ -64,7 +65,9 @@ button{
     border-radius: 5px;
     background-color: black;
     color:white;
-    
+    height: 35px;
+    cursor: pointer;
+    font-size: 18px;
 }
 
 
