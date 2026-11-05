@@ -23,7 +23,7 @@ app.get("/",(req,res)=>{
 
 app.post("/shorten",async (req,res)=>{
     try{
-    const originalUrl=req.body.url;
+    const originalUrl=req.body.originalurl;
     if(!originalUrl){
         return res.status(401).json({
             message:"URL is required"
