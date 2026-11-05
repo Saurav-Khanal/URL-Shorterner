@@ -44,3 +44,21 @@ app.post("/shorten",async (req,res)=>{
 }
 })
 
+app.get("/shorten/:id",async (req,res)=>{
+    try{
+    const shortenCode=req.params.id;
+    console.log(shortenCode);
+    const UrlDocument=await URL.findOne({shortCode:shortenCode});
+    if(!UrlDocument){
+        return res.status(404).json({
+            message:"Short Url does not exist"
+        })
+    }
+    const originalUrl=UrlDocument.originalurl;
+    res.redirect(originalUrl);
+}catch(err){
+    res.status(500).json({
+        message:"Internal server error"
+    })
+}
+})
