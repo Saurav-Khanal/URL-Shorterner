@@ -21,7 +21,13 @@ app.get("/",(req,res)=>{
 })
 
 app.post("/shorten",async (req,res)=>{
+    try{
     const originalUrl=req.body.url;
+    if(!originalUrl){
+        return res.status(401).json({
+            message:"URL is required"
+        })
+    }
     const shortCode=crypto.randomBytes(6).toString('hex');
     const newUrl= await URL.create({
         originalurl:originalUrl,
@@ -31,4 +37,10 @@ app.post("/shorten",async (req,res)=>{
         message:"URL shorten successFull",
         shortCode:shortCode
     })
+}catch(err){
+    res.status(500).json({
+        message:"Internal server error"
+    })
+}
 })
+
