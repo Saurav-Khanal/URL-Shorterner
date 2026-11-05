@@ -1,20 +1,26 @@
-require("node:dns").setServers(["8.8.8.8", "8.8.4.4"]);
 const express=require("express");
 const app=express();
 require("dotenv").config();
 const mongoose=require("mongoose");
 const URL=require("./models/url");
 const crypto = require("node:crypto");
-const { url } = require("node:inspector");
 app.use(express.json());
 app.use(express.static("public"));
-
-mongoose.connect(process.env.MONGO_URI)
-.then(()=>{
-    console.log("Mongodb Connected");  
-app.listen(3000,()=>{
-    console.log("Api is running on localhost 3000");
-})
+app.use(async(req,res,next)=>{
+    try{
+    if(mongoose.connection.readyState === 1){
+        next();
+    }else{
+        await mongoose.connect(process.env.MONGO_URI);
+        next();
+    }
+}catch(err){
+    console.log(err);
+    res.status(500).json({
+        message:"Database connection failed"
+    }
+    )
+}
 })
 
 app.get("/",(req,res)=>{
@@ -25,7 +31,7 @@ app.post("/shorten",async (req,res)=>{
     try{
     const originalUrl=req.body.originalurl;
     if(!originalUrl){
-        return res.status(401).json({
+        return res.status(400).json({
             message:"URL is required"
         })
     }
@@ -62,3 +68,5 @@ app.get("/shorten/:id",async (req,res)=>{
     })
 }
 })
+
+module.exports = app;
