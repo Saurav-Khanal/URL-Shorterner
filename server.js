@@ -7,6 +7,7 @@ const URL=require("./models/url");
 const crypto = require("node:crypto");
 const { url } = require("node:inspector");
 app.use(express.json());
+app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>{
@@ -17,7 +18,7 @@ app.listen(3000,()=>{
 })
 
 app.get("/",(req,res)=>{
-    res.send("Your backend is running");
+    res.redirect("/index.html");
 })
 
 app.post("/shorten",async (req,res)=>{
@@ -47,7 +48,6 @@ app.post("/shorten",async (req,res)=>{
 app.get("/shorten/:id",async (req,res)=>{
     try{
     const shortenCode=req.params.id;
-    console.log(shortenCode);
     const UrlDocument=await URL.findOne({shortCode:shortenCode});
     if(!UrlDocument){
         return res.status(404).json({
