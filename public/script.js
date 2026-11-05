@@ -19,9 +19,9 @@ shortenButton.addEventListener("click", () => {
     const data = await response.json();
     if (!response.ok) {
       errorMessage.textContent = data.message;
-      errorMessage.style.color="red";
+      errorMessage.style.color = "red";
       setTimeout(() => {
-        errorMessage.textContent="";
+        errorMessage.textContent = "";
       }, 2000);
       return;
     }
@@ -44,9 +44,9 @@ copybtn.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(shortUrl);
     copymessage.textContent = "Copied";
+    copymessage.style.color = "green";
     setTimeout(() => {
       copymessage.textContent = "";
-      copymessage.style.color = "green";
     }, 2000);
   } catch (err) {
     console.log("Failed to copy", err);
